@@ -23,8 +23,10 @@ namespace ElvUI_Update
             UpdateStatus(Status.Ready);
         }
 
+        // UI updaters
         private delegate void UpdateStatusDelegate(Status status);
         private delegate void UpdateWowFolderDelegate(string path);
+        private delegate void SetUpdateButtonEnabledDelegate(bool enabled);
 
         public void UpdateStatus(Status status)
         {
@@ -47,6 +49,17 @@ namespace ElvUI_Update
 
             WowPath = path;
             txtWowPath.Text = WowPath;
+        }
+
+        public void SetUpdateButtonEnabled(bool enabled)
+        {
+            if (InvokeRequired)
+            {
+                Invoke(new SetUpdateButtonEnabledDelegate(SetUpdateButtonEnabled), enabled);
+                return;
+            }
+
+            btnGo.Enabled = enabled;
         }
 
         private void ChooseWowFolder()
@@ -83,6 +96,7 @@ namespace ElvUI_Update
         private async Task StartUpdate()
         {
             WowPath = txtWowPath.Text;
+            SetUpdateButtonEnabled(false);
 
             await Task.Run(() =>
             {
@@ -125,6 +139,7 @@ namespace ElvUI_Update
 
                 // guess we gotta assume we're done
                 UpdateStatus(Status.Done);
+                SetUpdateButtonEnabled(true);
             });
         }
     }
