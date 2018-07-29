@@ -4,7 +4,7 @@ using System.IO;
 
 namespace ElvUI_Update.Utils
 {
-    public class FileUtils
+    public sealed class FileUtils
     {
         public static string DataFolder => Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "ElvUI_Update");
         public static string RepoFolder => Path.Combine(DataFolder, "Source");
