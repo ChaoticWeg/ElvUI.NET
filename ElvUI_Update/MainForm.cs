@@ -1,4 +1,5 @@
 ﻿using ElvUI_Update.Utils;
+using ElvUI_Update.Utils.Config;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -6,21 +7,36 @@ namespace ElvUI_Update
 {
     public partial class MainForm : Form
     {
-        private string WowPath = "";
+        public Configuration Config { get; private set; }
 
         public MainForm()
         {
             InitializeComponent();
 
-            Load += (_, __) => { OnFormLoad(); };
+            SetUpdateButtonEnabled(false);
+
+            Load += async (_, __) => { await OnFormLoad(); };
             btnSelectWoW.Click += (_, __) => { ChooseWowFolder(); };
             btnGo.Click += async (_, __) => { await StartUpdate(); };
         }
 
-        private void OnFormLoad()
+        private async Task OnFormLoad()
         {
-            FileUtils.CheckAppDataFolder();
-            UpdateStatus(Status.Ready);
+            SetUpdateButtonEnabled(false);
+            UpdateStatus(Status.Initializing);
+
+            await Task.Run(() =>
+            {
+                UpdateStatus(Status.CheckingDataFolder);
+                FileUtils.CheckAppDataFolder();
+
+                UpdateStatus(Status.LoadingConfig);
+                Config = ConfigUtils.Load();
+                UpdateWowFolder(Config.WowPath);
+
+                UpdateStatus(Status.Ready);
+                SetUpdateButtonEnabled(true);
+            });
         }
 
         // UI updaters
@@ -47,8 +63,8 @@ namespace ElvUI_Update
                 return;
             }
 
-            WowPath = path;
-            txtWowPath.Text = WowPath;
+            Config.WowPath = path;
+            txtWowPath.Text = Config.WowPath;
         }
 
         public void SetUpdateButtonEnabled(bool enabled)
@@ -95,16 +111,21 @@ namespace ElvUI_Update
 
         private async Task StartUpdate()
         {
-            WowPath = txtWowPath.Text;
+            Config.WowPath = txtWowPath.Text;
             SetUpdateButtonEnabled(false);
 
             await Task.Run(() =>
             {
+                // save config
+                UpdateStatus(Status.SavingConfig);
+                ConfigUtils.Save(Config);
+
                 // check wow directory
                 UpdateStatus(Status.CheckingWow);
-                if (!FileUtils.IsValidWowDirectory(WowPath))
+                if (!FileUtils.IsValidWowDirectory(Config.WowPath))
                 {
                     UpdateStatus(Status.InvalidWow);
+                    SetUpdateButtonEnabled(true);
                     return;
                 }
 
@@ -113,6 +134,7 @@ namespace ElvUI_Update
                 if (!FileUtils.CheckAppDataFolder())
                 {
                     UpdateStatus(Status.InvalidDataFolder);
+                    SetUpdateButtonEnabled(true);
                     return;
                 }
 
@@ -135,7 +157,7 @@ namespace ElvUI_Update
 
                 // copy ("install") from appdata to wow addons folder
                 UpdateStatus(Status.Copying);
-                GitUtils.Install(WowPath);
+                GitUtils.Install(Config.WowPath);
 
                 // guess we gotta assume we're done
                 UpdateStatus(Status.Done);
