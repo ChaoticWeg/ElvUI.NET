@@ -17,6 +17,8 @@
         public static Status CheckingWow = new Status("Checking WoW directory...");
         public static Status CheckingElvUI = new Status("Checking ElvUI directory...");
         public static Status CheckingDataFolder = new Status("Checking data folder...");
+        public static Status LoadingConfig = new Status("Loading configuration...");
+        public static Status SavingConfig = new Status("Saving configuration...");
         public static Status Pulling = new Status("Pulling ElvUI updates from Git...");
         public static Status Copying = new Status("Installing ElvUI updates...");
 
