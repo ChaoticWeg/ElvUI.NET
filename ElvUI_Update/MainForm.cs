@@ -63,8 +63,20 @@ namespace ElvUI_Update
                 return;
             }
 
+            txtWowPath.Enabled = false;
+
             Config.WowPath = path;
             txtWowPath.Text = Config.WowPath;
+            
+            if (txtWowPath.Text.Length > 0)
+            {
+                // move caret to end
+                txtWowPath.SelectionStart = txtWowPath.Text.Length;
+                txtWowPath.SelectionLength = 0;
+            }
+
+            txtWowPath.Enabled = true;
+            txtWowPath.Focus();
         }
 
         public void SetUpdateButtonEnabled(bool enabled)
