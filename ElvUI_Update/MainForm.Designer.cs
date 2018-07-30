@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.txtWowPath = new System.Windows.Forms.TextBox();
             this.btnSelectWoW = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
@@ -45,15 +46,15 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.txtWowPath.Location = new System.Drawing.Point(6, 31);
             this.txtWowPath.Name = "txtWowPath";
-            this.txtWowPath.Size = new System.Drawing.Size(355, 20);
+            this.txtWowPath.Size = new System.Drawing.Size(347, 20);
             this.txtWowPath.TabIndex = 0;
             // 
             // btnSelectWoW
             // 
             this.btnSelectWoW.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnSelectWoW.Location = new System.Drawing.Point(367, 10);
+            this.btnSelectWoW.Location = new System.Drawing.Point(359, 10);
             this.btnSelectWoW.Name = "btnSelectWoW";
-            this.btnSelectWoW.Size = new System.Drawing.Size(75, 41);
+            this.btnSelectWoW.Size = new System.Drawing.Size(83, 41);
             this.btnSelectWoW.TabIndex = 1;
             this.btnSelectWoW.Text = "Select";
             this.btnSelectWoW.UseVisualStyleBackColor = true;
@@ -113,6 +114,7 @@
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.btnGo);
             this.Controls.Add(this.panel1);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.MinimumSize = new System.Drawing.Size(485, 190);
             this.Name = "MainForm";
