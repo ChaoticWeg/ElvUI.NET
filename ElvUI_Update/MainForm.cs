@@ -154,22 +154,26 @@ namespace ElvUI_Update
                 UpdateStatus(Status.Pulling);
                 GitStatus cloneResult = GitUtils.CloneRepo();
 
-                switch (cloneResult)
+                // bail out if we failed
+                if (cloneResult == GitStatus.Failed)
                 {
-                    case GitStatus.NoUpdates:
-                        UpdateStatus(Status.NoUpdates);
-                        return;
-                    case GitStatus.Failed:
-                        UpdateStatus(Status.GitPullFailed);
-                        return;
-                    default:
-                        // need to continue, to install existing updates
-                        break;
+                    UpdateStatus(Status.GitPullFailed);
+                    return;
                 }
 
                 // copy ("install") from appdata to wow addons folder
                 UpdateStatus(Status.Copying);
                 GitUtils.Install(Config.WowPath);
+
+                switch (cloneResult)
+                {
+                    case GitStatus.NoUpdates:
+                        UpdateStatus(Status.NoUpdates);
+                        break;
+                    default:
+                        UpdateStatus(Status.Done);
+                        break;
+                }
 
                 // guess we gotta assume we're done
                 UpdateStatus(Status.Done);

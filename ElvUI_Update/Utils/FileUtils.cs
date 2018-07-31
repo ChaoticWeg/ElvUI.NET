@@ -51,17 +51,19 @@ namespace ElvUI_Update.Utils
             // populate tree with files
             foreach(FileInfo file in source.GetFiles())
             {
-                FileInfo destFile = new FileInfo(Path.Combine(target.FullName, file.Name));
+                string targetFileName = Path.Combine(target.FullName, file.Name);
+                Debug.WriteLine($"comparing {targetFileName} with {file.FullName}");
+                FileInfo destFile = new FileInfo(targetFileName);
 
-                // only copy if newer
-                if (destFile.Exists)
+                // skip if exists and is newer or equal to source
+                if (destFile.Exists && file.LastWriteTime <= destFile.LastWriteTime)
                 {
-                    if (file.LastWriteTime > destFile.LastWriteTime)
-                    {
-                        // copy file to target directory
-                        file.CopyTo(destFile.FullName, true);
-                    }
+                    continue;
                 }
+
+                // copy file to target directory
+                Debug.WriteLine($"{targetFileName} needs updating");
+                file.CopyTo(destFile.FullName, true);
             }
         }
     }
