@@ -1,5 +1,6 @@
 ﻿using ElvUI_Update.Utils;
 using ElvUI_Update.Utils.Config;
+using System.Diagnostics;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -161,9 +162,18 @@ namespace ElvUI_Update
                     return;
                 }
 
+                // check existing elvui installation
+                UpdateStatus(Status.CheckingElvUI);
+                if (!FileUtils.CheckElvUIInstallation(Config.WowPath))
+                {
+                    Debug.WriteLine($"Need to reinstall!");
+
+                    // need to copy new files!
+                    UpdateStatus(Status.Copying);
+                    GitUtils.Install(Config.WowPath);
+                }
+
                 // copy ("install") from appdata to wow addons folder
-                UpdateStatus(Status.Copying);
-                GitUtils.Install(Config.WowPath);
 
                 switch (cloneResult)
                 {

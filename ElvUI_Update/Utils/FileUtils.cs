@@ -39,6 +39,57 @@ namespace ElvUI_Update.Utils
             return IsValidWowDirectory(wowPath) && Directory.Exists(AddonsFolder(wowPath));
         }
 
+        public static bool CheckElvUIInstallation(string wowPath)
+        {
+            DirectoryInfo elvuiSourceDir = new DirectoryInfo(Path.Combine(RepoFolder, "ElvUI"));
+            DirectoryInfo elvuiConfigSourceDir = new DirectoryInfo(Path.Combine(RepoFolder, "ElvUI_Config"));
+
+            DirectoryInfo elvuiTargetDir = new DirectoryInfo(Path.Combine(AddonsFolder(wowPath), "ElvUI"));
+            DirectoryInfo elvuiConfigTargetDir = new DirectoryInfo(Path.Combine(AddonsFolder(wowPath), "ElvUI_Config"));
+
+            return
+                CompareDirectoriesRecursively(elvuiSourceDir, elvuiTargetDir) &&
+                CompareDirectoriesRecursively(elvuiConfigSourceDir, elvuiConfigTargetDir);
+        }
+
+        public static bool CompareDirectoriesRecursively(DirectoryInfo source, DirectoryInfo target)
+        {
+            // both must exist, obviously
+            if (!source.Exists || !target.Exists)
+                return false;
+
+            foreach (DirectoryInfo sourceSubdir in source.GetDirectories())
+            {
+                // compare subdirectories recursively, too (recursion!)
+                string targetSubdirPath = Path.Combine(target.FullName, sourceSubdir.Name);
+                return CompareDirectoriesRecursively(sourceSubdir, new DirectoryInfo(targetSubdirPath));
+            }
+
+            foreach (FileInfo sourceFile in source.GetFiles())
+            {
+                // compare files
+                string targetFilePath = Path.Combine(target.FullName, sourceFile.Name);
+
+                if (!CompareFiles(sourceFile, new FileInfo(targetFilePath)))
+                {
+                    // files are not the same, or one does not exist
+                    return false;
+                }
+            }
+
+            // no files failed comparison, so must be OK.
+            return true;
+        }
+
+        public static bool CompareFiles(FileInfo f1, FileInfo f2)
+        {
+            return
+                f1.Exists &&
+                f2.Exists &&
+                f1.Name == f2.Name &&
+                f1.CreationTimeUtc == f2.CreationTimeUtc;
+        }
+
         public static void CopyFilesRecursively(DirectoryInfo source, DirectoryInfo target)
         {
             // create directory tree
@@ -52,7 +103,6 @@ namespace ElvUI_Update.Utils
             foreach(FileInfo file in source.GetFiles())
             {
                 string targetFileName = Path.Combine(target.FullName, file.Name);
-                Debug.WriteLine($"comparing {targetFileName} with {file.FullName}");
                 FileInfo destFile = new FileInfo(targetFileName);
 
                 // skip if exists and is newer or equal to source
@@ -62,7 +112,6 @@ namespace ElvUI_Update.Utils
                 }
 
                 // copy file to target directory
-                Debug.WriteLine($"{targetFileName} needs updating");
                 file.CopyTo(destFile.FullName, true);
             }
         }
