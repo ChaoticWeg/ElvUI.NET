@@ -1,5 +1,6 @@
 ﻿using ElvUI_Update.Utils;
 using ElvUI_Update.Utils.Config;
+using ElvUI_Update.Workers;
 using System.Diagnostics;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -18,7 +19,7 @@ namespace ElvUI_Update
 
             Load += async (_, __) => { await OnFormLoad(); };
             btnSelectWoW.Click += (_, __) => { ChooseWowFolder(); };
-            btnGo.Click += async (_, __) => { await StartUpdate(); };
+            btnGo.Click += async (_, __) => { await DoUpdate(); };
         }
 
         private async Task OnFormLoad()
@@ -80,7 +81,7 @@ namespace ElvUI_Update
             txtWowPath.Focus();
         }
 
-        public void SetUpdateButtonEnabled(bool enabled)
+        private void SetUpdateButtonEnabled(bool enabled)
         {
             if (InvokeRequired)
             {
@@ -122,73 +123,27 @@ namespace ElvUI_Update
             return null;
         }
 
-        private async Task StartUpdate()
+        private async Task DoUpdate()
         {
             Config.WowPath = txtWowPath.Text;
             SetUpdateButtonEnabled(false);
 
-            await Task.Run(() =>
+            GitWorker worker = new GitWorker(this);
+            GitStatus result = await worker.Run();
+
+            switch (result)
             {
-                // save config
-                UpdateStatus(Status.SavingConfig);
-                ConfigUtils.Save(Config);
+                case GitStatus.Updated:
+                    UpdateStatus(Status.Done);
+                    break;
+                case GitStatus.NoUpdates:
+                    UpdateStatus(Status.NoUpdates);
+                    break;
+                default:
+                    break;
+            }
 
-                // check wow directory
-                UpdateStatus(Status.CheckingWow);
-                if (!FileUtils.IsValidWowDirectory(Config.WowPath))
-                {
-                    UpdateStatus(Status.InvalidWow);
-                    SetUpdateButtonEnabled(true);
-                    return;
-                }
-
-                // check appdata folder
-                UpdateStatus(Status.CheckingDataFolder);
-                if (!FileUtils.CheckAppDataFolder())
-                {
-                    UpdateStatus(Status.InvalidDataFolder);
-                    SetUpdateButtonEnabled(true);
-                    return;
-                }
-
-                // clone (or pull) into appdata folder
-                UpdateStatus(Status.Pulling);
-                GitStatus cloneResult = GitUtils.CloneRepo();
-
-                // bail out if we failed
-                if (cloneResult == GitStatus.Failed)
-                {
-                    UpdateStatus(Status.GitPullFailed);
-                    return;
-                }
-
-                // check existing elvui installation
-                UpdateStatus(Status.CheckingElvUI);
-                if (!FileUtils.CheckElvUIInstallation(Config.WowPath))
-                {
-                    Debug.WriteLine($"Need to reinstall!");
-
-                    // need to copy new files!
-                    UpdateStatus(Status.Copying);
-                    GitUtils.Install(Config.WowPath);
-                }
-
-                // copy ("install") from appdata to wow addons folder
-
-                switch (cloneResult)
-                {
-                    case GitStatus.NoUpdates:
-                        UpdateStatus(Status.NoUpdates);
-                        break;
-                    default:
-                        UpdateStatus(Status.Done);
-                        break;
-                }
-
-                // guess we gotta assume we're done
-                UpdateStatus(Status.Done);
-                SetUpdateButtonEnabled(true);
-            });
+            SetUpdateButtonEnabled(true);
         }
     }
 }
