@@ -1,4 +1,5 @@
-﻿using LibGit2Sharp;
+﻿using ElvUI_Update.Properties;
+using LibGit2Sharp;
 using LibGit2Sharp.Handlers;
 using System;
 using System.Diagnostics;
@@ -58,12 +59,13 @@ namespace ElvUI_Update.Utils
                 // if you're viewing this comment in the commit history, hi!
                 // sneaky, but no sensitive creds here.
 
-                MergeResult result = Commands.Pull(repo, new Signature("ChaoticWeg", "shawn@chaoticweg.cc", new DateTimeOffset(DateTime.Now)), options);
+                MergeResult result = Commands.Pull(repo,
+                    new Signature(Resources.GitName, Resources.GitEmail, new DateTimeOffset(DateTime.Now)), options);
 
-                if (result.Status == MergeStatus.UpToDate)
-                    return GitStatus.NoUpdates;
+                if (result.Status == MergeStatus.FastForward)
+                    return GitStatus.Updated;
 
-                return GitStatus.Updated;
+                return GitStatus.NoUpdates;
             }
         }
 
