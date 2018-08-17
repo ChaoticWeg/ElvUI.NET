@@ -1,1 +1,13 @@
-theme: jekyll-theme-cayman
+title: ElvUI.NET
+baseurl: "/elvui.net"
+url: "https://chaoticweg.cc/elvui.net"
+
+show_downloads: true
+
+repository: chaoticweg/elvui.net
+
+# Build settings
+markdown: kramdown
+theme: minima
+plugins:
+  - "jekyll-github-metadata"
