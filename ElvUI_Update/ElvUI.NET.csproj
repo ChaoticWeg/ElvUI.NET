@@ -8,7 +8,7 @@
     <ProjectGuid>{D4334BD6-AAF5-47AA-B486-35DB0F97FE56}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <RootNamespace>ElvUI_Update</RootNamespace>
-    <AssemblyName>ElvUI_Update</AssemblyName>
+    <AssemblyName>ElvUI.NET</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -65,7 +65,7 @@
     <ManifestKeyFile>ElvUI_Update_TemporaryKey.pfx</ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>Resources\elvui_update.ico</ApplicationIcon>
+    <ApplicationIcon>elvui_update.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Costura, Version=3.1.0.0, Culture=neutral, PublicKeyToken=9919ef960d84173d, processorArchitecture=MSIL">
@@ -137,6 +137,7 @@
     <EmbeddedResource Include="Resources\elvui_update.ico" />
     <EmbeddedResource Include="Costura32\git2-6311e88.dll" />
     <EmbeddedResource Include="Costura64\git2-6311e88.dll" />
+    <Content Include="elvui_update.ico" />
     <Content Include="FodyWeavers.xml" />
   </ItemGroup>
   <ItemGroup>
