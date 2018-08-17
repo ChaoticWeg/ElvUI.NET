@@ -11,3 +11,7 @@ Source code can be deleted as part of normal system cleanup if desired (though a
 
 - [Stable](https://github.com/ChaoticWeg/ElvUI_Update/releases)
 - [Newest](https://ci.appveyor.com/project/ChaoticWeg/elvui-update/build/artifacts)
+
+### Disclaimer
+
+I am not in any way affiliated with Tukui, Elv, or developers and maintainers of ElvUI. I created this initially as a batch script to update my own installation of ElvUI, and later adapted it into a GUI.
