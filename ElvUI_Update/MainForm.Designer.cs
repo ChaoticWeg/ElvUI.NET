@@ -1,4 +1,4 @@
-﻿namespace ElvUI_Update
+﻿namespace ElvUINET
 {
     partial class MainForm
     {
@@ -34,11 +34,11 @@
             this.btnSelectWoW = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.label2 = new System.Windows.Forms.Label();
             this.btnGo = new System.Windows.Forms.Button();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.labelStatus = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
-            this.label2 = new System.Windows.Forms.Label();
             this.panel1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -84,6 +84,17 @@
             this.panel1.Size = new System.Drawing.Size(445, 66);
             this.panel1.TabIndex = 3;
             // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
+            this.label2.Location = new System.Drawing.Point(145, 10);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(25, 13);
+            this.label2.TabIndex = 3;
+            this.label2.Text = "( ? )";
+            this.toolTip1.SetToolTip(this.label2, "Where Wow.exe is located");
+            // 
             // btnGo
             // 
             this.btnGo.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
@@ -110,17 +121,6 @@
             this.labelStatus.Size = new System.Drawing.Size(59, 17);
             this.labelStatus.Text = "Loading...";
             // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
-            this.label2.Location = new System.Drawing.Point(145, 10);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(25, 13);
-            this.label2.TabIndex = 3;
-            this.label2.Text = "( ? )";
-            this.toolTip1.SetToolTip(this.label2, "Where Wow.exe is located");
-            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -133,7 +133,7 @@
             this.MaximizeBox = false;
             this.MinimumSize = new System.Drawing.Size(485, 190);
             this.Name = "MainForm";
-            this.Text = "ElvUI Updater by ChaoticWeg";
+            this.Text = "ElvUI.NET by ChaoticWeg";
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             this.statusStrip1.ResumeLayout(false);

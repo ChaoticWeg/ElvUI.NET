@@ -2,11 +2,12 @@
 using System.Diagnostics;
 using System.IO;
 
-namespace ElvUI_Update.Utils
+namespace ElvUINET.Utils
 {
     public sealed class FileUtils
     {
-        public static string DataFolder => Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "ElvUI_Update");
+        public static string DataFolderName => "ElvUI.NET";
+        public static string DataFolder => Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), DataFolderName);
         public static string RepoFolder => Path.Combine(DataFolder, "Source");
         public static string AddonsFolder(string wowPath) => Path.Combine(wowPath, "Interface", "AddOns");
 

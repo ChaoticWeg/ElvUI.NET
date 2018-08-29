@@ -2,7 +2,7 @@
 using System;
 using System.IO;
 
-namespace ElvUI_Update.Utils.Config
+namespace ElvUINET.Utils.Config
 {
     public sealed class ConfigUtils
     {
@@ -10,7 +10,7 @@ namespace ElvUI_Update.Utils.Config
 
         public static Configuration Default => new Configuration
         {
-            WowPath = Properties.Settings.Default["WowPath"].ToString()
+            WowPath = ElvUI.NET.Properties.Settings.Default["WowPath"].ToString()
         };
 
         public static void CheckConfig()

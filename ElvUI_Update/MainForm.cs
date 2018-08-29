@@ -1,11 +1,11 @@
-﻿using ElvUI_Update.Utils;
-using ElvUI_Update.Utils.Config;
-using ElvUI_Update.Workers;
-using System.Diagnostics;
+﻿using ElvUINET.Utils;
+using ElvUINET.Utils.Config;
+using ElvUINET.Utils.Status;
+using ElvUINET.Workers;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace ElvUI_Update
+namespace ElvUINET
 {
     public partial class MainForm : Form
     {
@@ -25,28 +25,28 @@ namespace ElvUI_Update
         private async Task OnFormLoad()
         {
             SetUpdateButtonEnabled(false);
-            UpdateStatus(Status.Initializing);
+            UpdateStatus(AppStatus.Initializing);
 
             await Task.Run(() =>
             {
-                UpdateStatus(Status.CheckingDataFolder);
+                UpdateStatus(AppStatus.CheckingDataFolder);
                 FileUtils.CheckAppDataFolder();
 
-                UpdateStatus(Status.LoadingConfig);
+                UpdateStatus(AppStatus.LoadingConfig);
                 Config = ConfigUtils.Load();
                 UpdateWowFolder(Config.WowPath);
 
-                UpdateStatus(Status.Ready);
+                UpdateStatus(AppStatus.Ready);
                 SetUpdateButtonEnabled(true);
             });
         }
 
         // UI updaters
-        private delegate void UpdateStatusDelegate(Status status);
+        private delegate void UpdateStatusDelegate(AppStatus status);
         private delegate void UpdateWowFolderDelegate(string path);
         private delegate void SetUpdateButtonEnabledDelegate(bool enabled);
 
-        public void UpdateStatus(Status status)
+        public void UpdateStatus(AppStatus status)
         {
             if (InvokeRequired)
             {
@@ -94,7 +94,7 @@ namespace ElvUI_Update
 
         private void ChooseWowFolder()
         {
-            UpdateStatus(Status.SelectingWow);
+            UpdateStatus(AppStatus.SelectingWow);
 
             string newPath = ChooseFolder();
 
@@ -102,14 +102,14 @@ namespace ElvUI_Update
             {
                 if (!FileUtils.IsValidWowDirectory(newPath))
                 {
-                    UpdateStatus(Status.InvalidWow);
+                    UpdateStatus(AppStatus.InvalidWow);
                     return;
                 }
 
                 UpdateWowFolder(newPath);
             };
 
-            UpdateStatus(Status.Ready);
+            UpdateStatus(AppStatus.Ready);
         }
 
         private string ChooseFolder()
@@ -134,10 +134,10 @@ namespace ElvUI_Update
             switch (result)
             {
                 case GitStatus.Updated:
-                    UpdateStatus(Status.Done);
+                    UpdateStatus(AppStatus.Done);
                     break;
                 case GitStatus.NoUpdates:
-                    UpdateStatus(Status.NoUpdates);
+                    UpdateStatus(AppStatus.NoUpdates);
                     break;
                 default:
                     break;

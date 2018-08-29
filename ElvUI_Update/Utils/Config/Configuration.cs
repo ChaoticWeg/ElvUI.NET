@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace ElvUI_Update.Utils.Config
+namespace ElvUINET.Utils.Config
 {
     [JsonObject]
     public class Configuration

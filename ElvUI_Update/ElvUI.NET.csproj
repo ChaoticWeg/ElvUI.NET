@@ -7,7 +7,7 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{D4334BD6-AAF5-47AA-B486-35DB0F97FE56}</ProjectGuid>
     <OutputType>WinExe</OutputType>
-    <RootNamespace>ElvUI_Update</RootNamespace>
+    <RootNamespace>ElvUI.NET</RootNamespace>
     <AssemblyName>ElvUI.NET</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -93,7 +93,7 @@
     <Compile Include="Utils\Config\ConfigUtils.cs" />
     <Compile Include="Utils\Config\Configuration.cs" />
     <Compile Include="Utils\GitUtils.cs" />
-    <Compile Include="Utils\Status.cs" />
+    <Compile Include="Utils\Status\AppStatus.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -103,6 +103,7 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utils\FileUtils.cs" />
+    <Compile Include="Utils\Status\GitStatus.cs" />
     <Compile Include="Workers\GitWorker.cs" />
     <Compile Include="Workers\Worker.cs" />
     <EmbeddedResource Include="MainForm.resx">

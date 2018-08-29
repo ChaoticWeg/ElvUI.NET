@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace ElvUI_Update
+namespace ElvUINET
 {
     static class Program
     {

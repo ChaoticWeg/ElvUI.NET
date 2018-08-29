@@ -1,18 +1,13 @@
-﻿using ElvUI_Update.Properties;
+﻿using ElvUI.NET.Properties;
+using ElvUINET.Utils.Status;
 using LibGit2Sharp;
 using LibGit2Sharp.Handlers;
 using System;
 using System.Diagnostics;
 using System.IO;
 
-namespace ElvUI_Update.Utils
+namespace ElvUINET.Utils
 {
-    public enum GitStatus
-    {
-        NoUpdates,
-        Updated,
-        Failed
-    }
 
     public sealed class GitUtils
     {

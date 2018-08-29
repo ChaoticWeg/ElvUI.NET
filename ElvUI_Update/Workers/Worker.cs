@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace ElvUI_Update.Workers
+namespace ElvUINET.Workers
 {
     public abstract class Worker<T>
     {
